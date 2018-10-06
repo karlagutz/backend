@@ -6,10 +6,20 @@ import User from './src/schemas/users';
 import bodyParser from 'body-parser';
 import { createToken } from './src/resolvers/create';
 import { verifyToken } from './src/resolvers/verify';
+import graphQLHTTP from 'express-graphql';
+import schema from './src/graphql';
+
 
 const app = express();
 const jsonParser = bodyParser.json();
 const port = 3000;
+
+
+    app.use('/graphql', graphQLHTTP((req,res)=>({
+        schema,
+        graphiql: true,
+        pretty: true
+    })))
 
 app.get('/', function(req,res){
     res.send('Hello world');
@@ -27,6 +37,7 @@ db.on('error', () => console.log("failed to connect to database"))
             res.send(users);
         })
     })
+
 
     app.get('/add-client', (req,res) => {
         var client = new Client({
