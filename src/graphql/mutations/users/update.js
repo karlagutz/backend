@@ -15,7 +15,7 @@ export default {
             type: new GRAPHQL.GraphQLNonNull(UserInputType)
         }
     },
-    resolve(params){
+    resolve(root,params){
         return User.findByIdAndUpdate(params.id, {$set:{...params.data}})
             .then((user)=> User.findById(user.id).exec())
             .catch((err)=> new Error('Error at update', err))

@@ -11,7 +11,7 @@ export default{
             type: new GRAPHQL.GraphQLNonNull(GRAPHQL.GraphQLID)
         }
     },
-    resolve(params){
+    resolve(root,params){
         const deletedUser = User.findByIdAndDelete(params.id).exec()
         if(!deletedUser) throw Error("Error on Delete")
         return deletedUser

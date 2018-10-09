@@ -32,12 +32,17 @@ const MoviesSchema = new Schema({
     
     },
     'cast': {
-        type: Date,
-
+        type: String,
     },
     'length': {
         type: String,
     },
+    'image': {
+        type: String
+    },
+    url: {
+        type: String
+    }
 
     
     

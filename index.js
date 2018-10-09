@@ -1,6 +1,5 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import Client from './src/schemas/clients';
 import Category from './src/schemas/categories';
 import User from './src/schemas/users';
 import bodyParser from 'body-parser';

@@ -13,7 +13,7 @@ const querySingleUser = {
             type: GRAPHQL.GraphQLNonNull(GRAPHQL.GraphQLID)
         }
     },
-    resolve(params){
+    resolve(root,params){
         const user = User.findById(params.id).exec()
         return user
     }

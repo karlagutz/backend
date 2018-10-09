@@ -9,7 +9,8 @@ export const UserType = new GRAPHQL.GraphQLObjectType({
             type: GRAPHQL.GraphQLNonNull(GRAPHQL.GraphQLID)
         },
         name: {
-            type: GRAPHQL.GraphQLString
+            type: GRAPHQL.GraphQLString,
+            description: "Name of the user"
         },
         lastName : {
             type : GRAPHQL.GraphQLString

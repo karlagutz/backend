@@ -11,7 +11,7 @@ export default {
             type: new GRAPHQL.GraphQLNonNull(UserInputType)
         }
     },
-    resolve(params){
+    resolve(root,params){
         const user = new User(params.data)
         const newUser = user.save();
         if(!newUser) throw new Error("Error at creating User")
