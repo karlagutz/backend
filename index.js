@@ -11,7 +11,7 @@ import schema from './src/graphql';
 
 const app = express();
 const jsonParser = bodyParser.json();
-const port = 3000;
+const port = process.eventNames.port || 3000;
 
 
     app.use('/graphql', graphQLHTTP((req,res)=>({
