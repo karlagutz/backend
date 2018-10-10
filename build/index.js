@@ -36,7 +36,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var app = (0, _express2.default)();
 var jsonParser = _bodyParser2.default.json();
-var port = process.env.port || 3000;
+var port = process.env.PORT || 3000;
 
 app.use('/graphql', (0, _expressGraphql2.default)(function (req, res) {
     return {
