@@ -14,18 +14,13 @@ const jsonParser = bodyParser.json();
 const port = 3000;
 
 
-    app.use('/graphql', graphQLHTTP((req,res)=>({
-        schema,
-        graphiql: true,
-        pretty: true
-    })))
-
 app.get('/', function(req,res){
     res.send('Hello world');
 })
 app.listen(port, () =>{
     console.log('Server WORKS on port ' + port);
 })
+
 mongoose.connect('mongodb://gabo16:gabo16@ds123173.mlab.com:23173/backend');
 const db = mongoose.connection;
 db.on('error', () => console.log("failed to connect to database"))
@@ -115,3 +110,25 @@ db.on('error', () => console.log("failed to connect to database"))
             res.send('Categpry creadoouu');
         })
     })
+
+    app.use('/graphql', (req, res, next) => {
+        const token = req.headers['authorization']
+        try{
+            req.user = verifyToken(token)
+            next()
+        }
+        catch(er){
+            res.status(401).json({
+                message: er.message
+            })
+        }
+    })
+
+    app.use('/graphql', graphQLHTTP((req,res)=>({
+            schema,
+            graphiql: true,
+            pretty: true,
+            context:{
+                user: req.user
+            }
+        })))
