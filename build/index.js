@@ -1,32 +1,64 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import Category from './src/schemas/categories';
-import User from './src/schemas/users';
-import bodyParser from 'body-parser';
-import { createToken } from './src/resolvers/create';
-import { verifyToken } from './src/resolvers/verify';
-import graphQLHTTP from 'express-graphql';
-import schema from './src/graphql';
+'use strict';
 
-const app = express();
-const jsonParser = bodyParser.json();
-const port = process.eventNames.port || 3000;
+var _express = require('express');
 
-app.use('/graphql', graphQLHTTP((req, res) => ({
-    schema,
-    graphiql: true,
-    pretty: true
-})));
+var _express2 = _interopRequireDefault(_express);
+
+var _mongoose = require('mongoose');
+
+var _mongoose2 = _interopRequireDefault(_mongoose);
+
+var _categories = require('./src/schemas/categories');
+
+var _categories2 = _interopRequireDefault(_categories);
+
+var _users = require('./src/schemas/users');
+
+var _users2 = _interopRequireDefault(_users);
+
+var _bodyParser = require('body-parser');
+
+var _bodyParser2 = _interopRequireDefault(_bodyParser);
+
+var _create = require('./src/resolvers/create');
+
+var _verify = require('./src/resolvers/verify');
+
+var _expressGraphql = require('express-graphql');
+
+var _expressGraphql2 = _interopRequireDefault(_expressGraphql);
+
+var _graphql = require('./src/graphql');
+
+var _graphql2 = _interopRequireDefault(_graphql);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var app = (0, _express2.default)();
+var jsonParser = _bodyParser2.default.json();
+var port = process.eventNames.port || 3000;
+
+app.use('/graphql', (0, _expressGraphql2.default)(function (req, res) {
+    return {
+        schema: _graphql2.default,
+        graphiql: true,
+        pretty: true
+    };
+}));
 
 app.get('/', function (req, res) {
     res.send('Hello world');
 });
-app.listen(port, () => {
+app.listen(port, function () {
     console.log('Server WORKS on port ' + port);
 });
-mongoose.connect('mongodb://gabo16:gabo16@ds123173.mlab.com:23173/backend');
-const db = mongoose.connection;
-db.on('error', () => console.log("failed to connect to database")).once('open', () => console.log("Connected to the data base ", port));
+_mongoose2.default.connect('mongodb://gabo16:gabo16@ds123173.mlab.com:23173/backend');
+var db = _mongoose2.default.connection;
+db.on('error', function () {
+    return console.log("failed to connect to database");
+}).once('open', function () {
+    return console.log("Connected to the data base ", port);
+});
 
 app.get('/userlist', function (req, res) {
     Client.find({}).then(function (users) {
@@ -34,42 +66,42 @@ app.get('/userlist', function (req, res) {
     });
 });
 
-app.get('/add-client', (req, res) => {
+app.get('/add-client', function (req, res) {
     var client = new Client({
         name: "CLIENTAZO",
         lastName: "DESDE EXPRESS",
         age: 100
     });
 
-    client.save(err => {
+    client.save(function (err) {
         if (err) throw err;
         res.send('Cliente creadoouu');
     });
 });
 
-app.get('/find-client', (req, res) => {
+app.get('/find-client', function (req, res) {
 
     Client.find({ 'name': 'CLIENTAZO' }).then(function (clients) {
         res.send(clients);
     });
 });
 
-app.get('/register', jsonParser, (req, res) => {
+app.get('/register', jsonParser, function (req, res) {
 
     console.log(req.body);
-    var user = new User(req.body);
+    var user = new _users2.default(req.body);
 
-    user.save(err => {
+    user.save(function (err) {
         if (err) throw err;
         res.send("usuario registrado");
     });
 });
 
-app.use('/login', jsonParser, (req, res) => {
+app.use('/login', jsonParser, function (req, res) {
     if (req.method === 'POST') {
-        const token = createToken(req.body.email, req.body.password).then(token => {
-            res.status(200).json({ token });
-        }).catch(err => {
+        var token = (0, _create.createToken)(req.body.email, req.body.password).then(function (token) {
+            res.status(200).json({ token: token });
+        }).catch(function (err) {
             console.log(err);
             res.status(403).json({
                 message: 'Login Failed, INVALID CREDENTIALS'
@@ -78,14 +110,14 @@ app.use('/login', jsonParser, (req, res) => {
     }
 });
 
-app.use('/verifyToken', jsonParser, (req, res) => {
+app.use('/verifyToken', jsonParser, function (req, res) {
     if (req.method === 'POST') {
         try {
-            const token = req.headers['authorization'];
-            verifyToken(token).then(user => {
-                res.status(200).json({ user });
+            var token = req.headers['authorization'];
+            (0, _verify.verifyToken)(token).then(function (user) {
+                res.status(200).json({ user: user });
                 console.log(user);
-            }).catch(err => {
+            }).catch(function (err) {
                 console.log(err);
             });
         } catch (e) {
@@ -97,13 +129,13 @@ app.use('/verifyToken', jsonParser, (req, res) => {
     }
 });
 
-app.get('/add-category', (req, res) => {
-    var category = new Category({
+app.get('/add-category', function (req, res) {
+    var category = new _categories2.default({
         name: "Drama",
         description: "CRY BIatch"
     });
 
-    category.save(err => {
+    category.save(function (err) {
         if (err) throw err;
         res.send('Categpry creadoouu');
     });
